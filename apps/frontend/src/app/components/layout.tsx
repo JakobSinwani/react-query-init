@@ -23,7 +23,11 @@ export default function Layout() {
         borderColor={useColorModeValue('gray.200', 'gray.900')}
         align={'center'}
       >
-        <Image mr={10} maxH={MIN_HEIGHT} src={require('../assets/logo.png')} />
+        <Image
+          mr={10}
+          maxH={MIN_HEIGHT}
+          src={require('../../assets/logo.png')}
+        />
         <Box px={3}>
           <NavLink
             style={({ isActive }) => ({
