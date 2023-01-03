@@ -1,25 +1,17 @@
 import React, { useCallback } from 'react';
-import { useQuery } from 'react-query';
-import { getPosts, PostI } from '../api/posts';
+import { PostI } from '../api/posts';
 import Post from '../components/post';
 import { Box, Flex } from '@chakra-ui/react';
-import Loader from '../components/loader';
 import PostCount from '../components/post-count';
-import Error from '../components/Error';
 
 function Home() {
-  const {
-    data: posts,
-    status,
-    error,
-    isLoading,
-  } = useQuery<PostI[], { message: string }>('posts', getPosts);
+  /** Replace this post variable with useQuery hook that return posts.*/
+  const posts: PostI[] = [];
   const postCard = useCallback(
     (post: PostI) => <Post {...post} key={Math.random() * 10000} />,
     []
   );
-  if (isLoading) return <Loader />;
-  if (status === 'error') return <Error message={error?.message} />;
+  /** Add Here Loader Component When status is "loading", and Error component when status is "error" */
   return (
     <Box>
       <PostCount />
