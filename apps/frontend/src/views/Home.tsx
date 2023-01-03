@@ -1,43 +1,32 @@
 import React, { useCallback } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { createPost, getPosts, PostI } from '../api/posts';
+import { useQuery } from 'react-query';
+import { getPosts, PostI } from '../api/posts';
 import Post from '../components/post';
-import { Button, Container, Heading } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
+import Loader from '../components/loader';
 import PostCount from '../components/post-count';
+import Error from '../components/Error';
 
 function Home() {
-  const queryClient = useQueryClient();
-  const { data: posts } = useQuery<PostI[]>('posts', getPosts);
-  const mutation = useMutation(createPost, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('posts');
-    },
-  });
-
+  const {
+    data: posts,
+    status,
+    error,
+    isLoading,
+  } = useQuery<PostI[], { message: string }>('posts', getPosts);
   const postCard = useCallback(
     (post: PostI) => <Post {...post} key={Math.random() * 10000} />,
     []
   );
+  if (isLoading) return <Loader />;
+  if (status === 'error') return <Error message={error?.message} />;
   return (
-    <Container>
-      <Button
-        onClick={() =>
-          mutation.mutate({
-            title: 'New Post',
-            body: 'hello world',
-            id: Math.random() * 100203001,
-            userId: Math.random() * 100000000,
-          })
-        }
-      >
-        Add Post
-      </Button>
-      <Heading variant={'h3'}>
-        {mutation.isLoading ? 'lodaing...' : <Post {...mutation.data} />}
-      </Heading>
+    <Box>
       <PostCount />
-      {posts?.length && posts.map((post: PostI, index) => postCard(post))}
-    </Container>
+      <Flex wrap={'wrap'} justifyContent={'center'} flexDirection={'row'}>
+        {posts?.length && posts.map((post: PostI) => postCard(post))}
+      </Flex>
+    </Box>
   );
 }
 

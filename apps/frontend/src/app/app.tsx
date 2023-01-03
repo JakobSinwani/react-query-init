@@ -1,12 +1,18 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.css';
-import NxWelcome from './nx-welcome';
+import { Route, Routes } from 'react-router-dom';
+import Home from '../views/Home';
+import Layout from '../components/layout';
+import CreatePost from '../views/create-post';
+import PostPage from '../views/post-page';
 
 export function App() {
   return (
     <>
-      <NxWelcome title="frontend" />
-      <div />
+      <Layout />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/create" element={<CreatePost />} />
+        <Route path="/:postId" element={<PostPage />} />
+      </Routes>
     </>
   );
 }

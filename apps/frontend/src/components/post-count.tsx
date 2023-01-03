@@ -3,10 +3,14 @@ import { useQueryClient } from 'react-query';
 import { Heading } from '@chakra-ui/react';
 import { PostI } from '../api/posts';
 
-function PostsCount() {
+function PostCount() {
   const queryClient = useQueryClient();
   const posts = queryClient.getQueryData<PostI[]>('posts');
-  return <Heading variant={'h1'}>{posts && posts.length}</Heading>;
+  return (
+    <Heading m={4} variant={'h1'}>
+      Total Posts: {posts && posts.length}
+    </Heading>
+  );
 }
 
-export default PostsCount;
+export default PostCount;
