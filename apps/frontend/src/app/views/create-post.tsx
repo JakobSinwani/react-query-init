@@ -11,14 +11,9 @@ import {
   Heading,
   Input,
 } from '@chakra-ui/react';
-import { useMutation } from 'react-query';
-import { createPost, PostI } from '../api/posts';
-import Loader from '../components/loader';
-import Error from '../components/Error';
-import Post from '../components/post';
+import { PostI } from '../api/posts';
 
 function CreatePost() {
-  const mutation = useMutation('posts', createPost);
   const [post, setPost] = React.useState<PostI>({
     title: '',
     body: '',
@@ -27,12 +22,7 @@ function CreatePost() {
   });
 
   const handleSubmit = async () => {
-    mutation.mutate({
-      title: post.title,
-      body: post.body,
-      id: post.id,
-      userId: post.userId,
-    });
+    alert(JSON.stringify(post));
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPost((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
@@ -61,9 +51,6 @@ function CreatePost() {
           </CardFooter>
         </Card>
       </FormControl>
-      {mutation.isLoading && <Loader />}
-      {mutation.isError && <Error message={JSON.stringify(mutation.error)} />}
-      {mutation.isSuccess && <Post {...mutation.data} />}
     </Container>
   );
 }
